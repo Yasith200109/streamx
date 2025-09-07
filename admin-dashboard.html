@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamX - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <!-- Simple Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loader">
+            <div class="loader-spinner"></div>
+            <p>Loading Dashboard...</p>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <i class="fas fa-play-circle"></i>
+            <span>STREAM<strong>X</strong></span>
+            <span class="badge">ADMIN</span>
+        </div>
+
+        <!-- User Info -->
+        <div class="sidebar-user">
+            <img src="https://ui-avatars.com/api/?name=Admin&background=3b82f6&color=fff" alt="Admin">
+            <div class="user-info">
+                <h4 id="userName">Admin</h4>
+                <p id="userRole">Administrator</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active" onclick="loadPage('dashboard')">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#movies" class="nav-item" onclick="loadPage('movies')">
+                <i class="fas fa-film"></i>
+                <span>Movies</span>
+                <span class="counter" id="movieCount">0</span>
+            </a>
+            <a href="#analytics" class="nav-item" onclick="loadPage('analytics')">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#settings" class="nav-item" onclick="loadPage('settings')">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+            <button onclick="toggleTheme()" class="theme-btn">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+            <button onclick="logout()" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="topbar">
+            <button id="sidebarToggle" class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="topbar-title">
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="breadcrumb">
+                    <span>Admin</span>
+                    <i class="fas fa-chevron-right"></i>
+                    <span id="breadcrumbCurrent">Dashboard</span>
+                </div>
+            </div>
+
+            <div class="topbar-actions">
+                <!-- Live Status -->
+                <div class="live-indicator">
+                    <span class="live-dot"></span>
+                    <span data-active-users id="liveUserCount">0</span> Online
+                </div>
+                
+                <!-- Quick Actions -->
+                <button class="action-btn" onclick="refreshData()">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                
+                <!-- Add Movie Button -->
+                <button class="btn-primary" onclick="showAddModal()">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Movie</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div id="pageContent" class="page-content">
+            <!-- Dashboard Content (Default) -->
+            <div id="dashboardContent">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <!-- Total Movies -->
+                    <div class="stat-card">
+                        <div class="stat-icon bg-blue">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Total Movies</h3>
+                            <p class="stat-value" id="totalMovies">0</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 
+                                <span id="movieGrowth">12</span>% this month
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Active Users (Live) -->
+                    <div class="stat-card">
+                        <div class="stat-icon bg-green">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Active Users</h3>
+                            <p class="stat-value" data-active-users id="activeUsers">0</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-circle"></i> 
+                                Live Now
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Total Views -->
+                    <div class="stat-card">
+                        <div class="stat-icon bg-purple">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Total Views</h3>
+                            <p class="stat-value" id="totalViews">0</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 
+                                <span id="viewGrowth">24</span>% growth
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-time Metrics -->
+                <div class="metrics-grid">
+                    <!-- Live Users Card -->
+                    <div class="metric-card highlight">
+                        <div class="metric-header">
+                            <i class="fas fa-users"></i>
+                            <span class="metric-label">Live Users</span>
+                            <span class="live-badge">LIVE</span>
+                        </div>
+                        <div class="metric-value">
+                            <span data-active-users>0</span>
+                        </div>
+                        <div class="metric-footer">
+                            <span class="metric-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>Real-time</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Total Visits Card -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="metric-label">Total Visits</span>
+                        </div>
+                        <div class="metric-value">
+                            <span id="totalVisits">0</span>
+                        </div>
+                        <div class="metric-footer">
+                            <span class="metric-subtext">
+                                Today: <span id="dailyVisits">0</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Page Views Card -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fas fa-file-alt"></i>
+                            <span class="metric-label">Page Views</span>
+                        </div>
+                        <div class="metric-value">
+                            <span id="pageViews">0</span>
+                        </div>
+                        <div class="metric-footer">
+                            <span class="metric-subtext">
+                                All time
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Movie Views Card -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fas fa-play-circle"></i>
+                            <span class="metric-label">Movies Watched</span>
+                        </div>
+                        <div class="metric-value">
+                            <span id="movieViews">0</span>
+                        </div>
+                        <div class="metric-footer">
+                            <span class="metric-subtext">
+                                This month
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Movies Table (Only 5 movies) -->
+                <div class="table-card">
+                    <div class="card-header">
+                        <h3>Recent Movies</h3>
+                        <button onclick="loadPage('movies')" class="see-all-btn">
+                            <i class="fas fa-list"></i> View All Movies
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Movie</th>
+                                    <th>Category</th>
+                                    <th>Rating</th>
+                                    <th>Views</th>
+                                    <th>Upload Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentMoviesTableBody">
+                                <!-- Recent 5 movies will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Activity Feed -->
+                <div class="activity-feed">
+                    <div class="card-header">
+                        <h3>Recent Activity</h3>
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <!-- Activity items will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Movies Page Content (Hidden by default) -->
+            <div id="moviesContent" style="display: none;">
+                <!-- Movies Page Header -->
+                <div class="movies-header">
+                    <div class="movies-title">
+                        <h2>All Movies</h2>
+                        <p>Manage your movie collection</p>
+                    </div>
+                    
+                    <!-- Search and Filter Bar -->
+                    <div class="movies-controls">
+                        <div class="search-wrapper">
+                            <i class="fas fa-search"></i>
+                            <input 
+                                type="text" 
+                                id="movieSearchInput" 
+                                placeholder="Search movies by title, category, or year..."
+                                onkeyup="searchMovies()"
+                            >
+                        </div>
+                        
+                        <select id="categoryFilter" onchange="filterMoviesByCategory()">
+                            <option value="all">All Categories</option>
+                            <option value="action">Action</option>
+                            <option value="comedy">Comedy</option>
+                            <option value="drama">Drama</option>
+                            <option value="horror">Horror</option>
+                            <option value="scifi">Sci-Fi</option>
+                            <option value="romance">Romance</option>
+                            <option value="thriller">Thriller</option>
+                        </select>
+                        
+                        <select id="sortFilter" onchange="sortMovies()">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="views">Most Viewed</option>
+                            <option value="title">Title (A-Z)</option>
+                        </select>
+                        
+                        <button class="btn-primary" onclick="showAddModal()">
+                            <i class="fas fa-plus"></i> Add Movie
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Movies Stats -->
+                <div class="movies-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Movies:</span>
+                        <span class="stat-value" id="totalMoviesCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Active:</span>
+                        <span class="stat-value" id="activeMoviesCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Pending:</span>
+                        <span class="stat-value" id="pendingMoviesCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Search Results:</span>
+                        <span class="stat-value" id="searchResultsCount">-</span>
+                    </div>
+                </div>
+
+                <!-- All Movies Table -->
+                <div class="table-card">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Movie</th>
+                                    <th>Category</th>
+                                    <th>Year</th>
+                                    <th>Rating</th>
+                                    <th>Views</th>
+                                    <th>Duration</th>
+                                    <th>Quality</th>
+                                    <th>Upload Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allMoviesTableBody">
+                                <!-- All movies will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- No Results Message -->
+                    <div id="noResultsMessage" style="display: none; text-align: center; padding: 40px;">
+                        <i class="fas fa-search" style="font-size: 48px; color: var(--text-tertiary); margin-bottom: 20px;"></i>
+                        <p style="color: var(--text-secondary);">No movies found matching your search.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Movie Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Movie</h2>
+                <button onclick="closeModal()" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="movieForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Movie Title *</label>
+                        <input type="text" name="title" placeholder="Enter movie title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select name="category" required>
+                            <option value="">Select category</option>
+                            <option value="action">Action</option>
+                            <option value="comedy">Comedy</option>
+                            <option value="drama">Drama</option>
+                            <option value="horror">Horror</option>
+                            <option value="scifi">Sci-Fi</option>
+                            <option value="romance">Romance</option>
+                            <option value="thriller">Thriller</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Release Year *</label>
+                        <input type="number" name="year" placeholder="2024" min="1900" max="2025" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Rating *</label>
+                        <input type="number" name="rating" step="0.1" min="0" max="10" placeholder="8.5" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" name="duration" placeholder="2h 15min">
+                    </div>
+                    <div class="form-group">
+                        <label>Quality</label>
+                        <select name="quality">
+                            <option value="HD">HD</option>
+                            <option value="Full HD">Full HD</option>
+                            <option value="4K">4K</option>
+                            <option value="4K HDR">4K HDR</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Poster URL *</label>
+                    <input type="url" name="poster" placeholder="https://example.com/poster.jpg" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Backdrop URL (for hero section)</label>
+                    <input type="url" name="backdrop" placeholder="https://example.com/backdrop.jpg">
+                </div>
+                
+                <div class="form-group">
+                    <label>Video URL *</label>
+                    <input type="url" name="videoUrl" placeholder="https://example.com/movie.mp4" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea name="description" rows="3" placeholder="Enter movie description..." required></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" onclick="closeModal()" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Movie
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Confirm Delete</h2>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this movie?</p>
+                <p class="text-danger">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeDeleteModal()" class="btn-secondary">Cancel</button>
+                <button onclick="confirmDelete()" class="btn-danger">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="admin.js"></script>
+    <script src="secure-tracker.js"></script>
+</body>
+</html>

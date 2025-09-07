@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamX - Next Generation Streaming Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loader-container">
+            <div class="loader-logo">
+                <span class="logo-text-loader">STREAM</span><span class="logo-x-loader">X</span>
+            </div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+            <p class="loader-text">Loading amazing content...</p>
+        </div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle-container">
+        <button id="themeToggle" class="theme-toggle">
+            <div class="toggle-wrapper">
+                <i class="fas fa-sun sun-icon"></i>
+                <i class="fas fa-moon moon-icon"></i>
+            </div>
+        </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <!-- Logo -->
+                <div class="logo">
+                    <span class="logo-text">STREAM</span>
+                    <span class="logo-x">X</span>
+                    <span class="logo-badge">BETA</span>
+                </div>
+                
+                <!-- Nav Links -->
+                <div class="nav-links">
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#movies" class="nav-link">Movies</a>
+                    <a href="#series" class="nav-link">TV Shows</a>
+                    <a href="#new" class="nav-link">
+                        <span class="new-badge">NEW</span>
+                        Originals
+                    </a>
+                    <a href="#live" class="nav-link">
+                        <span class="live-dot"></span>
+                        Live
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <!-- Search -->
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="Search..." id="searchInput">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- Notifications -->
+                <button class="icon-btn notification-btn">
+                    <i class="far fa-bell"></i>
+                    <span class="notification-count">3</span>
+                </button>
+
+                <!-- Admin Button -->
+                <a href="login.html" class="admin-nav-btn">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </a>
+
+                <!-- Mobile Menu -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <a href="#home" class="mobile-menu-item">Home</a>
+            <a href="#movies" class="mobile-menu-item">Movies</a>
+            <a href="#series" class="mobile-menu-item">TV Shows</a>
+            <a href="#new" class="mobile-menu-item">Originals</a>
+            <a href="#live" class="mobile-menu-item">Live</a>
+            <a href="login.html" class="mobile-menu-item">
+                <i class="fas fa-user-shield"></i> Admin Panel
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Section with Movie Carousel -->
+    <section class="hero">
+        <div class="hero-slider" id="heroSlider">
+            <!-- Slides will be dynamically loaded -->
+        </div>
+        
+        <!-- Hero Navigation -->
+        <div class="hero-nav" id="heroNav">
+            <!-- Navigation dots will be dynamically added -->
+        </div>
+        
+        <!-- Hero Controls -->
+        <button class="hero-control prev" onclick="prevSlide()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="hero-control next" onclick="nextSlide()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Browse by Category</h2>
+            <div class="category-list">
+                <button class="category-item active" data-category="all">
+                    <div class="category-icon">🎬</div>
+                    <span>All</span>
+                </button>
+                <button class="category-item" data-category="action">
+                    <div class="category-icon">💥</div>
+                    <span>Action</span>
+                </button>
+                <button class="category-item" data-category="comedy">
+                    <div class="category-icon">😂</div>
+                    <span>Comedy</span>
+                </button>
+                <button class="category-item" data-category="drama">
+                    <div class="category-icon">🎭</div>
+                    <span>Drama</span>
+                </button>
+                <button class="category-item" data-category="horror">
+                    <div class="category-icon">👻</div>
+                    <span>Horror</span>
+                </button>
+                <button class="category-item" data-category="romance">
+                    <div class="category-icon">💕</div>
+                    <span>Romance</span>
+                </button>
+                <button class="category-item" data-category="scifi">
+                    <div class="category-icon">🚀</div>
+                    <span>Sci-Fi</span>
+                </button>
+                <button class="category-item" data-category="thriller">
+                    <div class="category-icon">🔪</div>
+                    <span>Thriller</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trending Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-fire"></i> Trending Now
+                </h2>
+                <a href="#" class="see-all">See All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="movies-container" id="trendingMovies">
+                <!-- Movies will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- New Releases -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-sparkles"></i> New Releases
+                </h2>
+                <a href="#" class="see-all">See All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="movies-container" id="newReleases">
+                <!-- Movies will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Continue Watching -->
+    <section class="content-section" id="continueSection" style="display: none;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i> Continue Watching
+                </h2>
+                <a href="#" class="see-all">See All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="movies-container" id="continueWatching">
+                <!-- Continue watching items will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Live User Counter -->
+    <div class="live-counter-widget">
+        <div class="live-counter-inner">
+            <span class="live-indicator-dot"></span>
+            <span class="live-text">LIVE</span>
+            <span id="liveUserCount" class="live-count" data-active-users>0</span>
+            <span class="live-label">watching now</span>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div id="playerModal" class="player-modal">
+        <div class="player-container">
+            <button class="player-close" onclick="closePlayer()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="player-wrapper">
+                <video id="videoPlayer" class="video-player" controls>
+                    <source src="" type="video/mp4">
+                </video>
+                
+                <!-- Video Info -->
+                <div class="video-info">
+                    <h3 id="videoTitle"></h3>
+                    <p id="videoDescription"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">StreamX</h3>
+                    <p class="footer-desc">Your ultimate destination for premium entertainment.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Browse</h4>
+                    <a href="#" class="footer-link">Movies</a>
+                    <a href="#" class="footer-link">TV Shows</a>
+                    <a href="#" class="footer-link">Originals</a>
+                    <a href="#" class="footer-link">Recently Added</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Help</h4>
+                    <a href="#" class="footer-link">Account</a>
+                    <a href="#" class="footer-link">Support Center</a>
+                    <a href="#" class="footer-link">FAQ</a>
+                    <a href="#" class="footer-link">Contact Us</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Legal</h4>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Cookie Preferences</a>
+                    <a href="#" class="footer-link">Corporate Info</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 StreamX. All rights reserved. Made with ❤️ in Sri Lanka</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button id="scrollTop" class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+    <script src="secure-tracker.js"></script>
+</body>
+</html>
